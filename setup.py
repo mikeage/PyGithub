@@ -27,11 +27,18 @@
 
 import setuptools
 import textwrap
+import sys
 
 version = "1.35"
 
 
 if __name__ == "__main__":
+    # Pick a version to use at install time. Environment markers (https://www.python.org/dev/peps/pep-0508/#environment-markers) are not supported in python 3.2 and 3.3, so we have to do it this way
+    if sys.version_info[0:2] == (3, 2):
+        requests = "requests==2.9.1"
+    else:
+        requests = "requests>=2.9.1"
+
     setuptools.setup(
         name="PyGithub",
         version=version,
@@ -96,7 +103,7 @@ if __name__ == "__main__":
         test_suite="github.tests.AllTests",
         use_2to3=True,
         install_requires=[
-            "requests>=2.9.1",
+            requests, # Set above based on sys.version_info
             "pyjwt"
         ],
         extras_require = {
